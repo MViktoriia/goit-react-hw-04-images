@@ -6,6 +6,7 @@ import Searchbar from "components/Searchbar/Searchbar";
 import Button from "components/Button/Button";
 import Modal from "components/Modal/Modal";
 import Section from "components/Section/Section";
+import style from './App.module.css';
 
 
 export class App extends Component {
@@ -36,11 +37,14 @@ export class App extends Component {
   getImages = (search, page) => {
     this.setState({
       isLoading: true,
-    });
+    })
     
     fetchImages(search, page)
       .then(({ data }) => {
         this.setState(({ images }) => {
+          if (data.hits.length === 0) {
+            return window.alert('No images found');
+          }
           return {
             images: [...images, ...data.hits]
           }
@@ -52,11 +56,12 @@ export class App extends Component {
         })
       })
       .finally(this.setState({
-        isLoading: false
-      }))
+        isLoading: false,
+      })
+    )
   };
 
-  onSubmit = ({ search } ) => {
+  onSubmit = ({ search }) => {    
     this.setState({
       search,
     })
@@ -91,7 +96,7 @@ export class App extends Component {
       modalOpen: true,
       modalContent: {
       largeImageURL: modalContent.largeImageURL,
-      tags: modalContent.tag
+      tags: modalContent.tags
     },
     })
   }
@@ -102,18 +107,18 @@ export class App extends Component {
   
     return (
       <div>
-        {modalOpen && <Modal largeImageURL={modalContent.largeImageURL} description={modalContent.tags} onClose={closeModal} />}
+        {modalOpen && <Modal largeImageURL={modalContent.largeImageURL} tags={modalContent.tags} onClose={closeModal} />}
         <Searchbar onSubmit={onSubmit} />
-        {isLoading && <ColorRing
-          visible={true}
-          height="80"
-          width="80"
-          ariaLabel="blocks-loading"
-          wrapperStyle={{}}
-          wrapperClass="blocks-wrapper"
-          colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
-        />}
-        {error && 'Please try again later...'}
+        {isLoading && <div className={style.loader}><ColorRing
+                          visible={true}
+                          height="100"
+                          width="100"
+                          ariaLabel="blocks-loading"
+                          wrapperStyle={{}}
+                          wrapperClass="blocks-wrapper"
+                          colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+                        /></div> }
+        {error && <p>'Please try again later...'</p>}
         {images.length > 0 && <Section><ImageGallery images={images} onClick={openModal} /><Button text='Load more' onClick={loadMore} /></Section>}
       </div>
     );

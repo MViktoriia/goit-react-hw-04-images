@@ -1,5 +1,7 @@
 import ImageGalleryItem from "components/ImageGalleryItem/ImageGalleryItem";
 import style from './ImageGallery.module.css';
+import PropTypes from 'prop-types';
+
 
 const ImageGallery = ({ images, onClick }) => {
     return (
@@ -10,5 +12,12 @@ const ImageGallery = ({ images, onClick }) => {
         </ul>
     )
 };
+
+ImageGallery.propTypes = {
+    images: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+    })),
+};
+
 
 export default ImageGallery;
