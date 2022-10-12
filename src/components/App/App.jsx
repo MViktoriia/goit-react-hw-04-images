@@ -61,7 +61,7 @@ export class App extends Component {
     )
   };
 
-  onSubmit = ({ search }) => {    
+  onSubmit = (search) => {    
     this.setState({
       search,
     })
