@@ -59,7 +59,6 @@ export function App() {
     
       fetchImages(search, page)
         .then(({ data }) => {
-          console.log(data.hits);
           if (data.hits.length === 0) {
             window.alert('No images found');
             return;
@@ -69,7 +68,6 @@ export function App() {
           });
         })
         .catch(newError => {
-          console.log("error");
           setError(newError.message);
         })
         .finally(setIsLoading(false));
