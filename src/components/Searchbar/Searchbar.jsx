@@ -9,6 +9,7 @@ export default function Searchbar({ onSubmit }) {
     const handleSubmit = (event) => {
         event.preventDefault();
         onSubmit(search);
+        setSearch("");
     };
 
     const handleInputChange = (event) => {
